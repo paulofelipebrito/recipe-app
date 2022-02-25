@@ -1,0 +1,10 @@
+.App {
+  width: 400px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 2px #3333331A;
+  border-radius: 3px;
+  overflow: hidden;
+}
+img{
+  max-width: 100%;
+}
