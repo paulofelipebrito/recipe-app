@@ -1,12 +1,14 @@
 import './App.css';
-import Header from '../Header';
 import Body from '../Body';
+import { MealProvider } from '../../Context/MealContext'
 
 function App() {
+  
   return (
     <div className="App">
-      <Header></Header>
-      <Body></Body>
+      <MealProvider>
+        <Body></Body>
+      </MealProvider>
     </div>
   );
 }
