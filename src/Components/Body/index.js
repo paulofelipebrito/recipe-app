@@ -7,7 +7,7 @@ import { HeaderContainer } from './styles';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 
-export default function Body() {
+export default function Body({setIsLoading}) {
   const [randomMeal, setRandomMeal] = useState(['']);
   const [favoriteMeal, setFavoriteMeal] = useState(['']);
   const [favoriteButtonClicked, setFavoriteButtonClicked] = useState(false);
@@ -17,7 +17,7 @@ export default function Body() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupInfo, setPopupInfo] = useState([''])
   const [ingredients, setIngredients] = useState([''])
-
+  
   const loadMealBySearch = useCallback(
     async (term) => {
       try{
@@ -36,9 +36,12 @@ export default function Body() {
 
   async function handleSearch(){
     setShowRandomMeal(false)
-    const mealBySearch = await loadMealBySearch(searchTerm);
-    console.log(mealBySearch)
-    await setSearchedMeal(mealBySearch);
+    try{
+      const mealBySearch = await loadMealBySearch(searchTerm);
+      setSearchedMeal(mealBySearch);
+    } catch(error){
+      console.error(error);
+    }
   }
 
   const loadRandomMeal = useCallback(
@@ -48,18 +51,23 @@ export default function Body() {
         setRandomMeal(randomMealArray.meals[0]); 
       } catch(error){
         console.error(error);
+      } finally{
+        setIsLoading(false);
       }
-    },[]);
+    },[setIsLoading]);
   
   const loadMealById = useCallback(
     async (id) => {
       try{
+        setIsLoading(true);
         const meal = await MealsService.listMealById(id);
         return meal;
       } catch(error){
         console.error(error);
+      } finally{
+        setIsLoading(false);
       }
-    }, []);  
+    }, [setIsLoading]);  
 
   function handleClick(randomMeal){
     addMealsToLocalStorage(randomMeal);
