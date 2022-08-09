@@ -54,7 +54,6 @@ export const BodyContainer = styled.header`
     border-radius: 3px;
     box-shadow: 0 0 10px 2px #3333331A;
     overflow: hidden;
-    cursor: pointer;
     .meal-header{
       position: relative;
       .random{
@@ -70,6 +69,7 @@ export const BodyContainer = styled.header`
         object-fit: cover;
         height: 250px;
         width: 100%;
+        cursor: pointer;
       }
     }
     .meal-body{
@@ -79,6 +79,7 @@ export const BodyContainer = styled.header`
       padding: 1rem;
       h4{
         margin: 0;
+        cursor: pointer;
       }
       button{
         background-color: transparent;

@@ -62,15 +62,14 @@ export default function Body() {
     }, []);  
 
   function handleClick(randomMeal){
-    console.log(randomMeal)
     addMealsToLocalStorage(randomMeal);
-    fecthFavoriteMeals(); 
+    fetchFavoriteMeals(); 
     
   }
 
   function handleCloseButton(idMeal){
     removeMealFromLocalStorage(idMeal);
-    fecthFavoriteMeals();
+    fetchFavoriteMeals();
   }
 
   function addMealsToLocalStorage(mealId){
@@ -92,13 +91,12 @@ export default function Body() {
     );    
   }
   
-  async function fecthFavoriteMeals(){
+  async function fetchFavoriteMeals(){
     window.location.reload(true);
     const mealIds = getMealsFromLocalStorage();
     if(mealIds.length > 0){
       for(let i = 0; i < mealIds.length; i++){
         const mealId = mealIds[i];
-        console.log(mealId);
         const meal = await loadMealById(mealId);
         if(meal !== undefined){
           addMealsToLocalStorage(meal);
@@ -129,8 +127,12 @@ export default function Body() {
 
   useEffect(() => {
     loadRandomMeal();          
+  }, [loadRandomMeal]);
+
+  useEffect(() => {
     setFavoriteMeal(getMealsFromLocalStorage()) 
-  }, []);
+
+  },[])
 
   return (
     <>
@@ -149,10 +151,10 @@ export default function Body() {
           <h3>Favorite Meals</h3>
           <ul className="fav-meals">
             {favoriteMeal.map((favMeal, index) => (
-              <div key={index} onClick={()=>{showMealInfo(favMeal)}}>
+              <div key={index}>
                 <li>
-                  <img src={favMeal.strMealThumb} alt={favMeal.strMeal} />
-                  <span>{favMeal.strMeal}</span>
+                  <img src={favMeal.strMealThumb} alt={favMeal.strMeal} onClick={()=>{showMealInfo(favMeal)}}/>
+                  <span onClick={()=>{showMealInfo(favMeal)}}>{favMeal.strMeal}</span>
                   <button className="close" onClick={()=>(handleCloseButton(favMeal.idMeal))}>
                     <AiFillCloseCircle/>
                   </button>
@@ -164,15 +166,15 @@ export default function Body() {
         </div>
         <div className="meals">
           {randomMeal && showRandomMeal && (
-            <div className="meal" onClick={()=>{showMealInfo(randomMeal)}}>
+            <div className="meal">
               <div className="meal-header">
                 <span className="random">
                   Random Meal
                 </span>
-                <img src={randomMeal.strMealThumb} alt={randomMeal.strMeal} />
+                <img src={randomMeal.strMealThumb} alt={randomMeal.strMeal} onClick={()=>{showMealInfo(randomMeal)}}/>
               </div>
               <div className="meal-body">
-                <h4>{randomMeal.strMeal}</h4>
+                <h4 onClick={()=>{showMealInfo(randomMeal)}}>{randomMeal.strMeal}</h4>
                 <button className="fav-btn" onClick={() => {
                   if(favoriteButtonClicked){
                     setFavoriteButtonClicked(false);
@@ -191,12 +193,12 @@ export default function Body() {
 
           )}
           {searchedMeal !== null && searchedMeal.length > 0 && !showRandomMeal && searchedMeal.map((meal, index) => (
-            <div className="meal" key={index} onClick={()=>{showMealInfo(meal)}}>
+            <div className="meal" key={index}>
               <div className="meal-header">
-                <img src={meal.strMealThumb} alt={meal.strMeal} />
+                <img src={meal.strMealThumb} alt={meal.strMeal} onClick={()=>{showMealInfo(meal)}}/>
               </div>
               <div className="meal-body">
-                <h4>{meal.strMeal}</h4>
+                <h4 onClick={()=>{showMealInfo(meal)}}>{meal.strMeal}</h4>
                 <button className="fav-btn" onClick={() => {
                   if(favoriteButtonClicked){
                     setFavoriteButtonClicked(false);
