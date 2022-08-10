@@ -1,18 +1,11 @@
-import APIError from '../../errors/ApiError';
-import delay from '../../Utils/delay';
-
 class HttpClient {
-  constructor(baseURL) {
+  baseURL: string;
+
+  constructor(baseURL: string) {
     this.baseURL = baseURL;
   }
 
-  async get(path) {
-    await delay(500);
-    /*const response = await fetch(`${this.baseURL}${path}`, {mode: 'no-cors'});
-    console.log(body);
-    const body = await response.json();
-    
-    return body;*/
+  async get(path: string) {
     let body = null;
     await fetch(`${this.baseURL}${path}`)
 		.then(res => {

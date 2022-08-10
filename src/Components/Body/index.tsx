@@ -2,13 +2,13 @@ import {BodyContainer } from './styles';
 import { FaHeart } from 'react-icons/fa';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import MealsService from '../../Services/MealsService';
-import { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { HeaderContainer } from './styles';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 
-export default function Body({setIsLoading}) {
-  const [randomMeal, setRandomMeal] = useState(['']);
+export default function Body({setIsLoading}: any) {
+  const [randomMeal, setRandomMeal] = useState<any>(['']);
   const [favoriteMeal, setFavoriteMeal] = useState(['']);
   const [favoriteButtonClicked, setFavoriteButtonClicked] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,9 +19,9 @@ export default function Body({setIsLoading}) {
   const [ingredients, setIngredients] = useState([''])
   
   const loadMealBySearch = useCallback(
-    async (term) => {
+    async (term: string) => {
       try{
-        const mealBySearch = await MealsService.listMealBySearch(term);
+        const mealBySearch: any = await MealsService.listMealBySearch(term);
         if(mealBySearch !== null){
           return mealBySearch.meals;
         }
@@ -30,8 +30,9 @@ export default function Body({setIsLoading}) {
       }
     }, []);
 
-  function handleChangeSearchTerm(event) {
-    setSearchTerm(event.target.value);    
+  function handleChangeSearchTerm(event: ChangeEvent) {
+    const { target } = event;
+    setSearchTerm((target as HTMLButtonElement).value);    
   }
 
   async function handleSearch(){
@@ -47,8 +48,8 @@ export default function Body({setIsLoading}) {
   const loadRandomMeal = useCallback(
     async () => {
       try{
-        const randomMealArray = await MealsService.listRandomMeal();
-        setRandomMeal(randomMealArray.meals[0]); 
+        const randomMealArray: any = await MealsService.listRandomMeal();
+        setRandomMeal(randomMealArray?.meals[0]); 
       } catch(error){
         console.error(error);
       } finally{
@@ -57,10 +58,10 @@ export default function Body({setIsLoading}) {
     },[setIsLoading]);
   
   const loadMealById = useCallback(
-    async (id) => {
+    async (id: any) => {
       try{
         setIsLoading(true);
-        const meal = await MealsService.listMealById(id);
+        const meal = await MealsService.listMealById(id.idMeal);
         return meal;
       } catch(error){
         console.error(error);
@@ -69,52 +70,55 @@ export default function Body({setIsLoading}) {
       }
     }, [setIsLoading]);  
 
-  function handleClick(randomMeal){
+  function handleClick(randomMeal: any){
     addMealsToLocalStorage(randomMeal);
     fetchFavoriteMeals(); 
     
   }
 
-  function handleCloseButton(idMeal){
+  function handleCloseButton(idMeal: number){
     removeMealFromLocalStorage(idMeal);
     fetchFavoriteMeals();
   }
 
-  function addMealsToLocalStorage(mealId){
+  function addMealsToLocalStorage(mealId: any){
+    console.log(mealId);
     const mealIds = getMealsFromLocalStorage();
 
     localStorage.setItem('mealIds', JSON.stringify([...mealIds, mealId]));
   }
 
   function getMealsFromLocalStorage(){
-    const mealIds = JSON.parse(localStorage.getItem('mealIds'));
+    const mealIdsFromLS = localStorage.getItem('mealIds');
+    const mealIds = mealIdsFromLS ? JSON.parse(mealIdsFromLS) : null;
     return mealIds === null ? [] : mealIds;
   }
 
-  function removeMealFromLocalStorage(mealId){
+  function removeMealFromLocalStorage(mealId: number) {
     const mealIds = getMealsFromLocalStorage();
-    localStorage.setItem('mealIds', JSON.stringify(mealIds.filter((id) => 
+    localStorage.setItem('mealIds', JSON.stringify(mealIds.filter((id: any) => 
       id.idMeal !== mealId)
       )
     );    
   }
   
   async function fetchFavoriteMeals(){
-    window.location.reload(true);
-    const mealIds = getMealsFromLocalStorage();
-    if(mealIds.length > 0){
-      for(let i = 0; i < mealIds.length; i++){
-        const mealId = mealIds[i];
-        const meal = await loadMealById(mealId);
-        if(meal !== undefined){
-          addMealsToLocalStorage(meal);
-        }
+    window.location.reload();
+    // const mealIds = getMealsFromLocalStorage();
+    // if(mealIds.length > 0){
+    //   for(let i = 0; i < mealIds.length; i++){
+    //     const mealId = mealIds[i];
+    //     const meal: any = await loadMealById(mealId);
+    //     console.log(meal.meals)
+    //     if(meal.meals !== undefined && meal.meals !== null){
+    //       addMealsToLocalStorage(meal.meals);
+    //     }
         
-      }
-    }
+    //   }
+    // }
   }
 
-  function showMealInfo(mealData) {
+  function showMealInfo(mealData: any) {
     setShowPopup(true);
     setIngredients(['']);
     const ingredientsArray = []
@@ -158,12 +162,12 @@ export default function Body({setIsLoading}) {
         <div className="fav-container">
           <h3>Favorite Meals</h3>
           <ul className="fav-meals">
-            {favoriteMeal.map((favMeal, index) => (
+            {favoriteMeal.map((favMeal: any, index) => (
               <div key={index}>
                 <li>
-                  <img src={favMeal.strMealThumb} alt={favMeal.strMeal} onClick={()=>{showMealInfo(favMeal)}}/>
-                  <span onClick={()=>{showMealInfo(favMeal)}}>{favMeal.strMeal}</span>
-                  <button className="close" onClick={()=>(handleCloseButton(favMeal.idMeal))}>
+                  <img src={favMeal?.strMealThumb} alt={favMeal?.strMeal} onClick={()=>{showMealInfo(favMeal)}}/>
+                  <span onClick={()=>{showMealInfo(favMeal)}}>{favMeal?.strMeal}</span>
+                  <button className="close" onClick={()=>(handleCloseButton(favMeal?.idMeal))}>
                     <AiFillCloseCircle/>
                   </button>
                 </li>
@@ -200,7 +204,7 @@ export default function Body({setIsLoading}) {
             </div>
 
           )}
-          {searchedMeal !== null && searchedMeal.length > 0 && !showRandomMeal && searchedMeal.map((meal, index) => (
+          {searchedMeal !== null && searchedMeal.length > 0 && !showRandomMeal && searchedMeal.map((meal: any, index) => (
             <div className="meal" key={index}>
               <div className="meal-header">
                 <img src={meal.strMealThumb} alt={meal.strMeal} onClick={()=>{showMealInfo(meal)}}/>
@@ -225,7 +229,7 @@ export default function Body({setIsLoading}) {
 
           ))}
         </div>
-        {showPopup && popupInfo.length > 0 && popupInfo.map((mealData, index) => (
+        {showPopup && popupInfo.length > 0 && popupInfo.map((mealData: any, index) => (
           <div className="popup-container" key={index}>
             <div className="popup">
               <button className="close-popup" onClick={()=>(handleClosePopup())}><AiFillCloseCircle/></button>

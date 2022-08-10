@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Spinner from '../Spinner';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   if(isLoading){
     return (<Spinner />)
