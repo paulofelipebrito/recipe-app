@@ -13,6 +13,7 @@ export default function Body({setIsLoading}: any) {
   const [favoriteButtonClicked, setFavoriteButtonClicked] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedMeal, setSearchedMeal] = useState(['']);
+  const [noResult, setNoResult] = useState(false);
   const [showRandomMeal, setShowRandomMeal] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [popupInfo, setPopupInfo] = useState([''])
@@ -39,6 +40,7 @@ export default function Body({setIsLoading}: any) {
     setShowRandomMeal(false)
     try{
       const mealBySearch = await loadMealBySearch(searchTerm);
+      mealBySearch === null ? setNoResult(true) : setNoResult(false)
       setSearchedMeal(mealBySearch);
     } catch(error){
       console.error(error);
@@ -228,6 +230,7 @@ export default function Body({setIsLoading}: any) {
             </div>
 
           ))}
+          {!searchedMeal && noResult && (<p style={{display: 'flex', justifyContent: 'center'}}>No result was found</p>)}
         </div>
         {showPopup && popupInfo.length > 0 && popupInfo.map((mealData: any, index) => (
           <div className="popup-container" key={index}>
