@@ -9,12 +9,12 @@
 ## ABOUT THE PROJECT
 
 <!-- ABOUT THE PROJECT -->
-Welcome to the _GitHub repository_ of my **Recipe** project! Here you can find information about the project's development, such as which technologies were used, how to install and run the project, usage and more.
+Welcome to the _GitHub repository_ of my **Recipe** project! Here you can find information about the project's development, such as which technologies were used, how to install and run the project, usage and more. If you're confused about where you are, try [**this link**][deploy-url] to the deployed project instead 😄.
 
 <div align="center">
 
 <p style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="recipe" title="#recipe" src="./assets/demo.gif" > 
+  <img alt="recipe" title="#recipe" src="./src/assets/demo.gif" > 
 
 </p>
 </div>
@@ -89,3 +89,5 @@ Paulo Felipe Brito - [LinkedIn](https://www.linkedin.com/in/paulofelipebrito/) -
 [vceditconfig]: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
 [license]: https://opensource.org/licenses/MIT
 [vceslint]: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+
+[deploy-url]: https://recipesbookapp.netlify.app
