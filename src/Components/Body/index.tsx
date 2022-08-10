@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {BodyContainer } from './styles';
 import { FaHeart } from 'react-icons/fa';
 import { AiFillCloseCircle } from 'react-icons/ai';
